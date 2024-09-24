@@ -14,6 +14,13 @@ public class UserDTO {
     @NotBlank(message = "Họ và tên không được bỏ trống")
     private String name ;
 
+
+    @JsonProperty("password")
+    @NotBlank(message = "Mật khẩu không đuược bỏ trống")
+    private String password ;
+
+    private String retypePassword ;
+
     @NotBlank(message = "Số điện thoại không được bỏ trống")
     private String phone ;
 

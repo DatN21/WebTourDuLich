@@ -5,7 +5,7 @@ import com.dulich.toudulich.Model.UserModel;
 import com.dulich.toudulich.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 @Service
 @RequiredArgsConstructor
 public class UserService implements iUserSevice{
@@ -15,10 +15,16 @@ public class UserService implements iUserSevice{
         UserModel newUserModel = UserModel.builder().
                 name(userDTO.getName())
                 .phone(userDTO.getPhone())
+                .passWords(userDTO.getPassword())
                 .gender(userDTO.getGender())
                 .email(userDTO.getEmail())
                 .address(userDTO.getAddress())
                 .build();
         return userRepository.save(newUserModel);
+    }
+
+    @Override
+    public String login(String phoneNumber, String passWord) {
+        return null;
     }
 }

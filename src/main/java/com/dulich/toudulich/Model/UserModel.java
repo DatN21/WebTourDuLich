@@ -24,6 +24,9 @@ public class UserModel {
     @Column(name = "phone",nullable = false,length = 15)
     private String phone ;
 
+    @Column(name ="password", nullable = false, length = 255)
+    private String passWords ;
+
     @Column(name = "gender",nullable = false,length = 10)
     private String gender ;
 

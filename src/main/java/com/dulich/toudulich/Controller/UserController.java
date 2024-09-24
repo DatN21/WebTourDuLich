@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult){
+    public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult){
         try {
             if (bindingResult.hasErrors()) {
                 List<String> errorMessages = bindingResult.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
@@ -36,5 +36,13 @@ public class UserController {
         }
     }
 
-
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody UserDTO userLoginDTO){
+        try {
+            String token  = userService.login(userLoginDTO.getPhone(),userLoginDTO.getPassword());
+            return ResponseEntity.ok("token!");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

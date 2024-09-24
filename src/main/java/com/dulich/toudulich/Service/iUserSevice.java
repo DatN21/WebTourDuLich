@@ -5,4 +5,6 @@ import com.dulich.toudulich.Model.UserModel;
 
 public interface iUserSevice {
     public UserModel createUserModel(UserDTO userDTO) ;
+
+    public String login(String phoneNumber, String passWord);
 }
