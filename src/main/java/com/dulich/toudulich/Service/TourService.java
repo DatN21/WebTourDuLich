@@ -16,9 +16,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TourService implements iTourService{
+public class TourService implements iTourService {
     private final TourRepository tourRepository;
-    private final TourImageRepository tourImageRepository ;
+    private final TourImageRepository tourImageRepository;
 
     @Override
     public TourModel createTour(TourDTO tourDTO) {
@@ -81,18 +81,25 @@ public class TourService implements iTourService{
     @Override
     public TourImageModel createTourImage(int tourId, TourImageDTO tourImageDTO) throws Exception {
         TourModel existingTourModel = tourRepository.findById(tourId)
-                .orElseThrow(()-> new Exception("Cannot find category with id: "+tourImageDTO.getTourId())
+                .orElseThrow(() -> new Exception("Cannot find category with id: " + tourImageDTO.getTourId())
                 );
         TourImageModel newTourImage = TourImageModel.builder()
                 .tourModel(existingTourModel)
                 .imageUrl(tourImageDTO.getImgUrl())
                 .build();
-        int size = tourImageRepository.findByTourModel(existingTourModel).size() ;
-        if(size >=TourImageModel.MAXIMUM_IMAGE_P_PRODUCT){
-            throw new Exception("Number of image <="+TourImageModel.MAXIMUM_IMAGE_P_PRODUCT);
+        int size = tourImageRepository.findByTourModel(existingTourModel).size();
+        if (size >= TourImageModel.MAXIMUM_IMAGE_P_PRODUCT) {
+            throw new Exception("Number of image <=" + TourImageModel.MAXIMUM_IMAGE_P_PRODUCT);
         }
         return tourImageRepository.save(newTourImage);
     }
+
+    @Override
+    public boolean existByTourName(String tourName) {
+        return tourRepository.existsByTourName(tourName);
+    }
+
+}
 
 
 

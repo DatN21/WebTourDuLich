@@ -11,6 +11,6 @@ public interface TourRepository extends JpaRepository<TourModel, Integer> {
 
     Page<TourModel> findAll(Pageable pageable);
 
-    boolean existsByName(String name);
+    boolean existsByTourName(String tourName);
 
 }

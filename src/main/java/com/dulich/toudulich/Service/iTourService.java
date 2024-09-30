@@ -17,4 +17,6 @@ public interface iTourService {
     TourModel updateTour(int tourId,TourDTO tour);
     void deleteTour(int tourId);
     TourImageModel createTourImage(int id , TourImageDTO tourImageDTO) throws Exception;
+
+    boolean existByTourName(String name);
 }
