@@ -27,12 +27,12 @@ public class BookingModel {
     @NotNull(message = "UserId can't be empty")
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    UserModel user;
+    UserModel userId;
 
     @NotNull(message = "RoleId can't be empty")
     @ManyToOne
     @JoinColumn(name = "tour_id", nullable = false)
-    TourModel tour;
+    TourModel tourId;
 
     @NotEmpty(message = "Tour name can't be empty")
     @Column(name = "tour_name", nullable = false, length = 255)

@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookingDTO {
+public class    BookingDTO {
     @NotNull(message = "UserId can't be empty")
     @JsonProperty("user_id")
     int userId;

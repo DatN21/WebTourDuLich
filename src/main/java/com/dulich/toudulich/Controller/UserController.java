@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/users")
 public class UserController {
     private final  UserService userService ;
     @GetMapping("")
@@ -21,7 +21,7 @@ public class UserController {
         return ResponseEntity.ok("Ok");
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult){
         try {
             if (bindingResult.hasErrors()) {
