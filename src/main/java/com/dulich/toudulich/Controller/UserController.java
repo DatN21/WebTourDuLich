@@ -15,13 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
-    private final UserService userService ;
+    private final  UserService userService ;
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok("Ok");
     }
 
-    @PostMapping("")
+    @PostMapping("register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult){
         try {
             if (bindingResult.hasErrors()) {

@@ -1,20 +1,24 @@
 package com.dulich.toudulich.Service;
 
 import com.dulich.toudulich.DTO.TourDTO;
+import com.dulich.toudulich.DTO.TourImageDTO;
+import com.dulich.toudulich.Model.TourImageModel;
 import com.dulich.toudulich.Model.TourModel;
+import com.dulich.toudulich.Repositories.TourImageRepository;
 import com.dulich.toudulich.Repositories.TourRepository;
+import com.dulich.toudulich.responses.TourResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TourService implements iTourService{
     private final TourRepository tourRepository;
-
+    private final TourImageRepository tourImageRepository ;
 
     @Override
     public TourModel createTour(TourDTO tourDTO) {
@@ -31,9 +35,21 @@ public class TourService implements iTourService{
         return tourRepository.save(newTour);
     }
 
-    @Override
-    public List<TourModel> getAllTour() {
-        return tourRepository.findAll();
+    public Page<TourResponse> getAllTour(PageRequest pageRequest) {
+
+        return tourRepository.findAll(pageRequest).map(tourModel -> {
+            return TourResponse.builder()
+                    .tourName(tourModel.getTourName())
+                    .tourType(tourModel.getTourType())
+                    .days(tourModel.getDays())
+                    .departureLocation(tourModel.getDepartureLocation())
+                    .destination(tourModel.getDestination())
+                    .price(tourModel.getPrice())
+                    .startDate(tourModel.getStartDate())
+                    .status(tourModel.getStatus())
+                    .build();
+        })
+                ;
     }
 
     @Override
@@ -57,6 +73,26 @@ public class TourService implements iTourService{
 
     @Override
     public void deleteTour(int tourId) {
+        Optional<TourModel> optionalTourModel = tourRepository.findById(tourId);
+        optionalTourModel.ifPresent(tourRepository::delete);
         tourRepository.deleteById(tourId);
     }
-}
+
+    @Override
+    public TourImageModel createTourImage(int tourId, TourImageDTO tourImageDTO) throws Exception {
+        TourModel existingTourModel = tourRepository.findById(tourId)
+                .orElseThrow(()-> new Exception("Cannot find category with id: "+tourImageDTO.getTourId())
+                );
+        TourImageModel newTourImage = TourImageModel.builder()
+                .tourModel(existingTourModel)
+                .imageUrl(tourImageDTO.getImgUrl())
+                .build();
+        int size = tourImageRepository.findByTourModel(existingTourModel).size() ;
+        if(size >=TourImageModel.MAXIMUM_IMAGE_P_PRODUCT){
+            throw new Exception("Number of image <="+TourImageModel.MAXIMUM_IMAGE_P_PRODUCT);
+        }
+        return tourImageRepository.save(newTourImage);
+    }
+
+
+
