@@ -1,7 +1,6 @@
 server:
   port: 8088
 
-
 spring:
   servlet:
     multipart:
@@ -21,6 +20,31 @@ spring:
 #      properties:
 #        hibernate:
 #          dialect: org.hibernate.dialect.MySQL8Dialect  # Ch? ??nh dialect cho MySQL
+
+
+#CSDL Quyết
+#server:
+#  port: 8088
+##  servlet:
+##    context-path: /shopapp
+#
+#spring:
+#  servlet:
+#    multipart:
+#      #      enabled: true
+#      max-file-size: 10MB
+#      max-request-size: 10MB
+#  datasource:
+#    url: "jdbc:mysql://localhost:3306/WebTravelTour"
+#    username: root
+#    password: root
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#    show-sql: true
+#
+#api:
+#  prefix: api/v1
 
 
 

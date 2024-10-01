@@ -15,7 +15,7 @@ public class UserService implements iUserSevice{
         UserModel newUserModel = UserModel.builder().
                 name(userDTO.getName())
                 .phone(userDTO.getPhone())
-                .passWords(userDTO.getPassword())
+                .passWord(userDTO.getPassword())
                 .gender(userDTO.getGender())
                 .email(userDTO.getEmail())
                 .address(userDTO.getAddress())

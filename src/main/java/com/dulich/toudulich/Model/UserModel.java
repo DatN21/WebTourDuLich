@@ -25,7 +25,7 @@ public class UserModel {
     private String phone ;
 
     @Column(name ="password", nullable = false, length = 255)
-    private String passWords ;
+    private String passWord ;
 
     @Column(name = "gender",nullable = false,length = 10)
     private String gender ;

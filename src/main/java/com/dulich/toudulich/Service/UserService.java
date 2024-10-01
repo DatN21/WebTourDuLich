@@ -18,6 +18,7 @@ public class UserService implements iUserSevice{
                 .gender(userDTO.getGender())
                 .email(userDTO.getEmail())
                 .address(userDTO.getAddress())
+                .passWord(userDTO.getPassword())
                 .build();
         return userRepository.save(newUserModel);
     }
