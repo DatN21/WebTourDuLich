@@ -1,9 +1,12 @@
 package com.dulich.toudulich.Controller;
 
 import com.dulich.toudulich.DTO.UserDTO;
-import com.dulich.toudulich.Service.UserService;
+import com.dulich.toudulich.Service.iUserService;
+import com.dulich.toudulich.exceptions.DataNotFoundException;
+import com.dulich.toudulich.exceptions.InvalidParamException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("${api.prefix}/users")
 public class UserController {
-    private final  UserService userService ;
+    private final iUserService userService ;
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok("Ok");
@@ -28,7 +31,7 @@ public class UserController {
                 List<String> errorMessages = bindingResult.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             } else {
-                userService.createUserModel(userDTO);
+                userService.createUser(userDTO);
                 return ResponseEntity.ok(userDTO);
             }
         } catch (Exception var4) {
@@ -37,12 +40,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserDTO userLoginDTO){
-        try {
-            String token  = userService.login(userLoginDTO.getPhone(),userLoginDTO.getPassword());
-            return ResponseEntity.ok("token!");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<?> login(@Valid @RequestBody UserDTO userLoginDTO) throws DataNotFoundException, InvalidParamException {
+        String token = userService.login(userLoginDTO.getPhone(), userLoginDTO.getPassword());
+        return ResponseEntity.ok(token) ;
     }
 }

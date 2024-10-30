@@ -20,4 +20,7 @@ public class RoleModel {
 
     @Column(name = "role_name",nullable = false)
     String roleName;
+
+    public static String ADMIN = "ADMIN" ;
+    public static String USER = "USER" ;
 }

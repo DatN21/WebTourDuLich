@@ -3,6 +3,13 @@ package com.dulich.toudulich.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -12,7 +19,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
-public class UserModel {
+public class UserModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -35,4 +42,45 @@ public class UserModel {
 
     @Column(name = "address",nullable = false,length = 255)
     private String address ;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RoleModel roleId ;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorityList = new ArrayList<>() ;
+        authorityList.add(new SimpleGrantedAuthority("ROLE_"+getRoleId().getRoleName().toUpperCase()));
+        //authorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN")) ;
+        return authorityList ;
+    }
+
+    @Override
+    public String getPassword() {
+        return passWord;
+    }
+
+    @Override
+    public String getUsername() {
+        return getName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

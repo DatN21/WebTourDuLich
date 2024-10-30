@@ -16,8 +16,18 @@ spring:
       ddl-auto: update  # Gi� tr? n�y c� th? l� none, validate, update, ho?c create-drop t�y thu?c v�o nhu c?u c?a b?n
 
     show-sql: true
-    # Hi?n th? c�c c�u l?nh SQL ???c th?c thi (h?u �ch cho vi?c debug)
-#      properties:
+api:
+  prefix: api/v1
+
+jwt:
+  expiration: 2592000
+  secretKey: 8n44TrUKJ0OI6JJ5KfPoU8YZiS6bTAZIeHSEr1YLVIg=
+
+
+
+
+
+
 #        hibernate:
 #          dialect: org.hibernate.dialect.MySQL8Dialect  # Ch? ??nh dialect cho MySQL
 

@@ -3,6 +3,7 @@ package com.dulich.toudulich.Controller;
 import com.dulich.toudulich.DTO.BookingDTO;
 import com.dulich.toudulich.Model.BookingModel;
 import com.dulich.toudulich.Service.BookingService;
+import com.dulich.toudulich.Service.iBookingService;
 import com.dulich.toudulich.responses.BookingResponse;
 import com.dulich.toudulich.responses.ListBookingResponse;
 import jakarta.validation.Valid;
@@ -19,9 +20,9 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/bookings")
+@RequestMapping("${api.prefix}/bookings")
 public class BookingController {
-    private final BookingService bookingService;
+    private final iBookingService bookingService;
 
     @PostMapping("")
     public ResponseEntity<?> createBookings(

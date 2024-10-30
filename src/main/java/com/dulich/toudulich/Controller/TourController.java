@@ -5,6 +5,7 @@ import com.dulich.toudulich.DTO.TourImageDTO;
 import com.dulich.toudulich.Model.TourImageModel;
 import com.dulich.toudulich.Model.TourModel;
 import com.dulich.toudulich.Service.TourService;
+import com.dulich.toudulich.Service.iTourService;
 import com.dulich.toudulich.responses.ListTourResponse;
 import com.dulich.toudulich.responses.TourResponse;
 import com.github.javafaker.Faker;
@@ -36,9 +37,9 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/tours")
+@RequestMapping("${api.prefix}/tours")
 public class TourController {
-    private final TourService tourService;
+    private final iTourService tourService;
 
     @PostMapping("")
     public ResponseEntity<?> createTours(

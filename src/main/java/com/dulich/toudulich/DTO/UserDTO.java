@@ -33,5 +33,7 @@ public class UserDTO {
     @NotBlank(message = "Địa chỉ không được bỏ trống")
     private String address ;
 
+    @JsonProperty("role_id")
+    private Long roleID ;
 
 }
