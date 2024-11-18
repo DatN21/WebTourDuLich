@@ -16,6 +16,8 @@ import java.util.Date;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TourResponse {
+    int id ;
+
     @JsonProperty("tour_name")
     String tourName;
 
@@ -35,4 +37,8 @@ public class TourResponse {
     String status;
 
     float price;
+
+    String description ;
+    String content ;
+    String imageHeader ;
 }

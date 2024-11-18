@@ -10,4 +10,5 @@ import java.util.List;
 public interface TourImageRepository extends JpaRepository<TourImageModel,Integer> {
     List<TourImageModel> findByTourModel(TourModel tourModel);
 
+    List<TourImageModel> findByTourModel_Id(Integer tourId);
 }

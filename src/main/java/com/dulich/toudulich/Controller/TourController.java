@@ -11,6 +11,7 @@ import com.dulich.toudulich.responses.TourResponse;
 import com.github.javafaker.Faker;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/tours")
@@ -55,6 +57,13 @@ public class TourController {
                 return ResponseEntity.badRequest().body(errorMessages);
             }
             TourModel tourModel = tourService.createTour(tourDTO) ;
+            if (tourModel == null) {
+                // Xử lý lỗi nếu tourModel bị null
+                System.out.println("tourModel is null");
+            } else {
+                // In giá trị tourModel để kiểm tra
+                System.out.println(tourModel.toString());
+            }
             return ResponseEntity.ok(tourModel);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -149,6 +158,28 @@ public class TourController {
         }
     }
 
+
+
+
+    @GetMapping("/images/{imageName}")
+    public ResponseEntity<?> viewImage(@PathVariable String imageName) {
+        try {
+            Path imagePath = Path.of("uploads").resolve(imageName);
+            UrlResource resource = new UrlResource(imagePath.toUri());
+
+            if (resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (MalformedURLException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     private String storeFile(MultipartFile file) throws IOException {
         if(!isImageFile(file) || file.getOriginalFilename() == null){
             throw new IOException("Invalid image format");
@@ -203,5 +234,24 @@ public class TourController {
         return ResponseEntity.ok("Generated fake tours successfully.");
     }
 
+    // Xử lý lấy tất cả ảnh, xoá 1 ảnh, xoá tất cả ảnh
+    @GetMapping("/{tourId}/images")
+    public ResponseEntity<List<TourImageDTO>> getTourImages(@PathVariable Integer tourId) {
+        List<TourImageDTO> images = tourService.getImagesByTourId(tourId);
+        return ResponseEntity.ok(images);
+    }
 
+    // API: Xoá một ảnh
+    @DeleteMapping("/images/{imageId}")
+    public ResponseEntity<Void> deleteImage(@PathVariable Integer imageId) {
+        tourService.deleteImage(imageId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // API: Xoá tất cả ảnh theo tourId
+    @DeleteMapping("/{tourId}/images")
+    public ResponseEntity<Void> deleteAllImages(@PathVariable Integer tourId) {
+        tourService.deleteAllImagesByTourId(tourId);
+        return ResponseEntity.noContent().build();
+    }
 }

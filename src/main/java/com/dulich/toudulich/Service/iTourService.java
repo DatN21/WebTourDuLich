@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface iTourService {
-    TourModel createTour(TourDTO tour);
+    TourModel createTour(TourDTO tour) throws Exception;
     Page<TourResponse> getAllTour(PageRequest pageRequest);
     TourModel getTourById(int id);
     TourModel updateTour(int tourId,TourDTO tour);
@@ -20,4 +20,12 @@ public interface iTourService {
     TourImageModel createTourImage(int id , TourImageDTO tourImageDTO) throws Exception;
 
     boolean existByTourName(String name);
+
+    List<TourImageDTO> getImagesByTourId (Integer tourId) ;
+
+    void deleteImage (Integer id) ;
+    void deleteAllImagesByTourId(Integer tourId) ;
+
+//    TourImageDTO mapToDTO(TourImageModel tourImageModel) ;
+
 }

@@ -1,5 +1,6 @@
 package com.dulich.toudulich.DTO;
 
+import com.dulich.toudulich.Model.TourImageModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -12,11 +13,35 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class TourImageDTO {
-    @JsonProperty("tour_id")
+    private Integer id ;
+
     @Min(value = 1, message = "Product id must be >0")
     private Integer tourId ;
 
     @Size(min = 5,max = 200,message = "Image's name")
-    @JsonProperty("image_url")
     private String imgUrl ;
+
+    public Integer getTourId() {
+        return tourId;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setTourId(Integer tourId) {
+        this.tourId = tourId;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

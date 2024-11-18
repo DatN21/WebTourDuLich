@@ -3,7 +3,8 @@ package com.dulich.toudulich.Model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
+import  com.dulich.toudulich.enums.TourType;
+import  com.dulich.toudulich.enums.Status;
 import java.util.Date;
 
 @Entity
@@ -32,15 +33,29 @@ public class TourModel {
     @Column(name = "destination", nullable = false, length = 255)
     String destination;
 
-    @Column(name = "tour_type", length = 50)
-    String tourType;
+    @Column(name = "tour_type")
+    @Enumerated(EnumType.STRING)
+    TourType tourType;
 
     @Column(name = "departure_location", nullable = false, length = 255)
     String departureLocation;
 
-    @Column(name = "status", length = 50)
-    String status;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    Status status;
 
     @Column(name = "price", nullable = false)
     float price;
+
+//    @Column(name = "thumbnail")
+//    String thubnail ;
+
+    @Column(name = "description")
+    String description ;
+
+    @Column(name = "content",columnDefinition = "LONGTEXT")
+    String content ;
+
+    @Column(name = "image_header", columnDefinition = "LONGTEXT")
+    String imageHeader ;
 }

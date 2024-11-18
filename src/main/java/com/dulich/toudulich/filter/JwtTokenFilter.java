@@ -33,42 +33,45 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@Nonnull HttpServletRequest request,
                                     @Nonnull HttpServletResponse response,
                                     @Nonnull FilterChain filterChain) throws ServletException, IOException {
-        try {
-            if (isBypassToken(request)){
-                filterChain.doFilter(request,response);
-                return;
-            }
-            final String authHeader = request.getHeader("Authorization") ;
-            if (authHeader == null || !authHeader.startsWith("Bearer ")){
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                return;
-            }
-
-            final String token = authHeader.substring(7) ;
-            final String phone =  jwtTokenUtil.extractPhone(token) ;
-            if(phone!=null && SecurityContextHolder.getContext().getAuthentication() == null){
-                UserModel user = (UserModel) userDetailsService.loadUserByUsername(phone);
-                if (jwtTokenUtil.validateToken(token, user)){
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                            user,
-                            null,
-                            user.getAuthorities()
-                    ) ;
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            try {
+                if (isBypassToken(request)){
+                    filterChain.doFilter(request,response);
+                    return;
                 }
-            }
+                final String authHeader = request.getHeader("Authorization") ;
+                if (authHeader == null || !authHeader.startsWith("Bearer ")){
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                    return;
+                }
 
-            filterChain.doFilter(request, response);
-        }catch (Exception e){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-        }
+                final String token = authHeader.substring(7) ;
+                final String phone =  jwtTokenUtil.extractPhone(token) ;
+                if(phone!=null && SecurityContextHolder.getContext().getAuthentication() == null){
+                    UserModel user = (UserModel) userDetailsService.loadUserByUsername(phone);
+                    if (jwtTokenUtil.validateToken(token, user)){
+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                                user,
+                                null,
+                                user.getAuthorities()
+                        ) ;
+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    }
+                }
+
+                filterChain.doFilter(request, response);
+            }catch (Exception e){
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            }
     }
 
     private boolean isBypassToken(@Nonnull HttpServletRequest request){
         final List<Pair<String,String>> bypassTokens = Arrays.asList(
                 Pair.of(String.format("%s/tours", apiPrefix), "GET"),
+                Pair.of(String.format("%s/tours", apiPrefix), "POST"),
+                Pair.of(String.format("%s/tours", apiPrefix), "PUT"),
                 Pair.of(String.format("%s/bookings", apiPrefix), "GET"),
+                Pair.of(String.format("%s/bookings", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST")
         );

@@ -1,6 +1,7 @@
 package com.dulich.toudulich.Controller;
 
 import com.dulich.toudulich.DTO.UserDTO;
+import com.dulich.toudulich.DTO.UserLoginDTO;
 import com.dulich.toudulich.Service.iUserService;
 import com.dulich.toudulich.exceptions.DataNotFoundException;
 import com.dulich.toudulich.exceptions.InvalidParamException;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserDTO userLoginDTO) throws DataNotFoundException, InvalidParamException {
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws DataNotFoundException, InvalidParamException {
         String token = userService.login(userLoginDTO.getPhone(), userLoginDTO.getPassword());
         return ResponseEntity.ok(token) ;
     }
